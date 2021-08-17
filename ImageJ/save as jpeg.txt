@@ -1,0 +1,22 @@
+// get the path
+dir = getDirectory("Choose the folder of images");
+list = getFileList(dir);
+
+path = dir + "JPEG\\";
+File.makeDirectory(path);
+
+for (i=0; i<list.length; i++) {
+	file = dir + list[i]; // define the path
+	open(file); // open the image file
+	selectWindow(list[i]);
+
+	// get filename without extension
+	name = getTitle; 
+	dotIndex = indexOf(name, ".");
+	title = substring(name, 0, dotIndex);
+	 
+	saveAs("Jpeg", path + title + ".jpg");
+	close();
+}
+
+print("FInished");

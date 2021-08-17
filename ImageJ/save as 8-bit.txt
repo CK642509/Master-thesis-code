@@ -1,0 +1,27 @@
+// get the path
+dir = getDirectory("Choose the folder of images");
+list = getFileList(dir);
+
+path = dir + "8-bit\\";
+File.makeDirectory(path);
+
+for (i=0; i<list.length; i++) {
+	file = dir + list[i]; // define the path
+	open(file); // open the image file
+	selectWindow(list[i]);
+
+	// turn into 8-bit
+	setOption("ScaleConversions", true);
+	run("8-bit");
+
+	// remove scale
+	run("Set Scale...", "distance=0 known=0 pixel=1 unit=pixel");
+
+	// get filename
+	name = getTitle; 
+	 
+	saveAs("Tiff", path + name);
+	close();
+}
+
+print("FInished");
