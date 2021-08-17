@@ -1,0 +1,49 @@
+// get all the path
+dir = getDirectory("Choose the folder of heatmap intensities");
+list = getFileList(dir);
+
+dir2 = getDirectory("Choose the folder to save images");
+
+// set parameters
+height = 6;
+
+
+for (i=0; i<list.length; i++) {
+	print(i+1 + ". " +  list[i]);
+
+	// define the path and open file
+	path = dir + list[i]; 
+	pixels_file = File.openAsString(path);
+	pixels_array = split(pixels_file,"");
+
+	// define the save path
+	dotIndex = indexOf(list[i], ".");
+	title = substring(list[i], 0, dotIndex);
+	path2 = dir2 + title; 
+	print(path2);
+
+	// get array size
+	width= pixels_array.length/height;
+	print("height: " + height);
+	print("width: " + width);
+	
+	// get min and max
+	Array.getStatistics(pixels_array, min, max, mean, stdDev);
+	print("Max: " + max);
+	print("Min: " + min);
+
+	// create image
+	newImage(File.nameWithoutExtension, "16-bit black", width, height, 1);
+
+	// set intensity pixel by pixel
+	for (m=0;m<height;m++) {
+		for (n=0;n<width;n++) {
+			int = parseInt(pixels_array[m*width+n]);
+			setPixel(n, m, int);
+		}
+	}
+
+	// save image
+	saveAs("Tiff", path2);
+	close();
+}

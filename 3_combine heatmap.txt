@@ -1,0 +1,34 @@
+// get all the path
+dir = getDirectory("Choose the folder of heatmap intensities");
+list = getFileList(dir);
+
+dir2 = getDirectory("Choose the folder to save images");
+
+
+newImage("heatmap", "16-bit black", 66, 12, 1);
+
+
+for (i=0; i<list.length; i++) {
+	print(i+1 + ". " +  list[i]);
+
+	// define the path and open image
+	path = dir + list[i]; 
+	open(path);
+	run("Select All");
+	run("Copy");
+
+	// select correct region to copy and paste
+	selectWindow("heatmap");
+	if (i<33) {
+		makeRectangle(i*2, 6, 2, 6);
+	}
+	else {
+		makeRectangle(130-i*2, 0, 2, 6);
+	}
+	run("Paste");
+	selectWindow(list[i]);
+	close();
+}
+
+selectWindow("heatmap");
+saveAs("Tiff", dir2 + "heatmap.tif");

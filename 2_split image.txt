@@ -1,0 +1,47 @@
+// get all the path
+dir = getDirectory("Choose the folder of heatmaps");
+list = getFileList(dir);
+
+dir2 = getDirectory("Choose the folder to save images");
+
+
+for (i=0; i<list.length; i++) {
+	print(i+1 + ". " +  list[i]);
+
+	// define the path and open image
+	path = dir + list[i]; 
+	open(path);
+
+	// define the save path
+	dotIndex = indexOf(list[i], ".");
+	title = substring(list[i], 0, dotIndex);
+	path2 = dir2 + title; 
+	print(path2);
+
+	// split title
+	spaceIndex = indexOf(title, " ");
+	title_1 = substring(title, 0, spaceIndex);
+	title_2 = substring(title, spaceIndex+1);
+	print(title_1);
+	print(title_2);
+
+	// define save path
+	path2_1 = dir2 + title_1;
+	path2_2 = dir2 + title_2;
+
+	// duplicate and save images
+	makeRectangle(0, 0, 2, 6);
+	run("Duplicate...", "title=1");
+	selectWindow("1");
+	saveAs("Tiff", path2_1);
+	close();
+
+	makeRectangle(4, 0, 2, 6);
+	run("Duplicate...", "title=2");
+	selectWindow("2");
+	saveAs("Tiff", path2_2);
+	close();
+
+	// close first image
+	close();
+}
