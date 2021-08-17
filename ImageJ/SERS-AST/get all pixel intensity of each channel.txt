@@ -1,0 +1,52 @@
+channel_number = 66;
+width = 2;
+height = 6;
+all = newArray(width*height);
+title = getTitle();
+
+
+for (i=0; i<66; i++) {
+	selectWindow(title);
+
+	// select each channel
+	if (i<33) {
+		makeRectangle(i*2, 6, 2, 6);
+	}
+	else {
+		makeRectangle(130-i*2, 0, 2, 6);
+	}
+
+	// duplicate
+	run("Duplicate...", "title=copy");
+
+	
+	// get intensity
+	selectWindow("copy");
+	for (m=0;m<height;m++) {
+		for (n=0;n<width;n++) {
+			p = getPixel(n, m);
+			all[m*width+n] = p;
+			
+			/*
+			if (p!=0) {
+				num = num + 1;
+				total = total + p;
+			}
+			*/
+		}
+	}
+	Array.print(all);
+	// Array.getStatistics(all, min, max, mean, stdDev)
+
+
+	// close the duplicate image
+	selectWindow("copy");
+	close();
+}
+
+
+
+
+
+
+

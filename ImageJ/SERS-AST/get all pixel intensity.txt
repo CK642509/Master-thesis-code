@@ -1,0 +1,25 @@
+getDimensions(width, height, channels, slices, frames);
+count = 0;
+total = 0;
+all = newArray(width*height);
+
+for (i=0;i<height;i++) {
+	for (j=0;j<width;j++) {
+		p = getPixel(j, i);
+		all[i*width+j] = p;
+		
+		/*
+		if (p!=0) {
+			num = num + 1;
+			total = total + p;
+		}
+		*/
+	}
+}
+
+
+//print("number of pixels: " + num);
+//print("total intensity: " + total);
+
+
+Array.show(all);
