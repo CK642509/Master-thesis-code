@@ -1,0 +1,222 @@
+/*
+
+waitForUser("Tips", "Please select 4 points. TL, BL, TR, BR.");
+// run("Select None");
+
+
+// remove scale
+run("Set Scale...", "distance=0 known=0 unit=pixel");
+
+s = selectionType();
+
+// get coordinates
+if( s == -1 ) {
+    exit("There was no selection.");
+} else if( s != 10 ) {
+    exit("The selection wasn't a point selection.");
+} else {
+    getSelectionCoordinates(xPoints,yPoints);
+}
+
+// define tl, bl, tr, br
+Array.getStatistics(xPoints, xmin, xmax, xmean, xstdDev);
+Array.getStatistics(yPoints, ymin, ymax, ymean, ystdDev);
+
+for (i=0; i<4; i++) {
+	if (xPoints[i] < xmean && yPoints[i] < ymean) {
+		tl_x = xPoints[i];     // top left of circle
+		tl_y = yPoints[i];     // top left of circle
+	}
+	else if (xPoints[i] < xmean && yPoints[i] > ymean) {
+		bl_x = xPoints[i];     // bottom left
+		bl_y = yPoints[i];
+	}
+	else if (xPoints[i] > xmean && yPoints[i] < ymean) {
+		tr_x = xPoints[i];     // top right
+		tr_y = yPoints[i];
+	}
+	else {
+		br_x = xPoints[i];     // bottom right
+		br_y = yPoints[i];
+	}
+}
+
+print("tl_x = " + tl_x);
+print("tl_y = " + tl_y);
+print("bl_x = " + bl_x);
+print("bl_y = " + bl_y);
+print("tr_x = " + tr_x);
+print("tr_y = " + tr_y);
+print("br_x = " + br_x);
+print("br_y = " + br_y);
+*/
+
+
+//parameters:
+tl_x = 770.5
+tl_y = 466.75
+bl_x = 549.75
+bl_y = 1547.25
+tr_x = 15078
+tr_y = 318
+br_x = 14863.667
+br_y = 1398
+
+
+
+
+/*
+tl_x = xPoints[0];     // top left of circle
+tl_y = yPoints[0];     // top left of circle
+
+bl_x = xPoints[1];     // bottom left
+bl_y = yPoints[1];
+
+tr_x = xPoints[2];     // top right
+tr_y = yPoints[2];
+
+br_x = xPoints[3];     // bottom right
+br_y = yPoints[3];
+*/
+
+
+
+
+
+
+
+//---------------------------------------------------------------------------
+
+r = 45;
+column = 32;
+row = 2;
+
+
+v_dx_l = (bl_x - tl_x)/(row -1);     // vertical left
+v_dy_l = (bl_y - tl_y)/(row -1);
+v_dx_r = (br_x - tr_x)/(row -1);     // vertical right
+v_dy_r = (br_y - tr_y)/(row -1);
+
+h_dx_t = (tr_x - tl_x)/(column -1);     // horizontal top
+h_dy_t = (tr_y - tl_y)/(column -1);
+h_dx_b = (br_x - bl_x)/(column -1);     // horizontal bottom
+h_dy_b = (br_y - bl_y)/(column -1);
+
+// create the circles
+makeOval(tl_x - r, tl_y - r, r*2, r*2);
+
+
+getSelectionBounds(x, y, w, h);
+setSelectionLocation(x, y); 
+
+for (i=0; i<row; i++) {
+	j = 0;
+	if (i != 0) {
+		roiManager("select", 0);      // select the first rectangle
+	}
+
+	// select the first rectangle, than move down
+	getSelectionBounds(x, y, w, h);
+	setSelectionLocation(x + i*v_dx_l, y + i*v_dy_l);
+	roiManager('Add');
+	//print(i);
+	//waitForUser("Tips", "i=");
+	
+	//----------------------------------------------------------------
+	
+	tl_x = 770.5;
+	tl_y = 466.75;
+	bl_x = 770;
+	bl_y = 1043;
+	tr_x = 885;
+	tr_y = 465;
+	br_x = 887;
+	br_y = 1040;
+
+	
+	sv_dx_l = (bl_x - tl_x)/(6 -1);
+	sv_dy_l = (bl_y - tl_y)/(6 -1);
+
+	sh_dx_t = (tr_x - tl_x)/(2 -1);     // horizontal top
+	sh_dy_t = (tr_y - tl_y)/(2 -1);
+	sh_dx_b = (br_x - bl_x)/(2 -1);     // horizontal bottom
+	sh_dy_b = (br_y - bl_y)/(2 -1);
+	
+	for (m=0; m<6;m++) {
+		n = 0;
+		if (m != 0) {
+			roiManager("select", i*2*6*column);
+		}
+		
+		getSelectionBounds(x, y, w, h);
+		setSelectionLocation(x + m*sv_dx_l, y + m*sv_dy_l);
+		if (m != 0) {
+			roiManager('Add');
+			//print(i,m);
+			//waitForUser("Tips", "i, m="+ i + m);
+		}
+		
+		sh_dx = ((6 - m)*sh_dx_t + m*sh_dx_b)/6;
+		sh_dy = ((6 - m)*sh_dy_t + m*sh_dy_b)/6;
+
+		for (n=1; n<2; n++) {
+			if (n == 1) {
+				getSelectionBounds(x, y, w, h);
+			}
+			setSelectionLocation(x + n*sh_dx, y + n*sh_dy);     // move right
+			roiManager('Add');
+			//print(i,m,n);
+			//waitForUser("Tips", "i, m, n=");
+		}
+		
+	}
+	
+	
+
+
+	//--------------------------------------------------------------
+	roiManager("select", i*2*6*column)
+	
+
+	h_dx = ((row - i)*h_dx_t + i*h_dx_b)/row;
+	h_dy = ((row - i)*h_dy_t + i*h_dy_b)/row;
+
+
+	for (j=1; j<column; j++) {
+		if (j !=1) {
+			roiManager("select", i*2*6*column);
+			getSelectionBounds(x, y, w, h);
+		}
+		
+		if (j == 1) {
+			getSelectionBounds(x, y, w, h);
+		}
+		setSelectionLocation(x + j*h_dx, y + j*h_dy);     // move right
+		roiManager('Add');
+
+		for (m=0; m<6;m++) {
+			n = 0;
+			if (m != 0) {
+				roiManager("select", i*2*6*column + j*2*6);
+			}
+			
+			getSelectionBounds(x, y, w, h);
+			setSelectionLocation(x + m*sv_dx_l, y + m*sv_dy_l);
+			if (m != 0) {
+				roiManager('Add');
+			}
+			
+			sh_dx = ((6 - m)*sh_dx_t + m*sh_dx_b)/6;
+			sh_dy = ((6 - m)*sh_dy_t + m*sh_dy_b)/6;
+	
+			for (n=1; n<2; n++) {
+				if (n == 1) {
+					getSelectionBounds(x, y, w, h);
+				}
+				setSelectionLocation(x + n*sh_dx, y + n*sh_dy);     // move right
+				roiManager('Add');
+			}
+			
+		}
+	}
+}
