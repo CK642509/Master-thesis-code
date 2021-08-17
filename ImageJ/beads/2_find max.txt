@@ -1,0 +1,8 @@
+n = roiManager("count");  // n = number of seleced region
+
+for (i=0; i<n; i++) {
+	roiManager("select", i);
+	run("Duplicate...", i);
+	run("Find Maxima...", "prominence=200 exclude output=Count");
+	close();
+}
