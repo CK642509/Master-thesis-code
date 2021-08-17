@@ -1,0 +1,14 @@
+// get the intensity of pixels
+pixels_file = File.openAsString("");
+pixels_array = split(pixels_file,"");
+
+row = 5;
+
+// get array size
+column = pixels_array.length/row;
+
+// set intensity pixel by pixel
+for (i=0;i<column;i++) {
+	new = Array.slice(pixels_array, i*row, i*row+row);
+	Array.print(new);
+}

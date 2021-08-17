@@ -1,0 +1,34 @@
+// get ROI of channel
+selectWindow("channel.tif");
+roiManager("Show None");
+run("Select None");
+run("Analyze Particles...", "size=0-infinity exclude clear add");
+roiManager("Show None");
+
+n = roiManager("count");  // n = number of seleced region
+for (i=0; i<n; i++) {
+	// get ROI of areas in channel
+	selectWindow("record_2.tif");
+	roiManager("Show None");
+	run("Select None");
+	roiManager("select", i);
+	run("Analyze Particles...", "exclude clear add");
+	roiManager("Show None");
+
+	// measure
+	selectWindow("1_4_5 1 0-4 uLmin_10X_30ms_after isolation_10min.tif");
+	m = roiManager("count");
+	for (j=0; j<m; j++) {
+		roiManager("select", j);
+		run("Measure");
+		area = getResult("Mean", j);
+		print(area);
+	}
+
+	// reset ROI to channel
+	selectWindow("channel.tif");
+	roiManager("Show None");
+	run("Select None");
+	run("Analyze Particles...", "size=0-infinity exclude clear add");
+	roiManager("Show None");
+}
