@@ -6,19 +6,19 @@ To speed up data processing, Python and ImageJ macro are applied. Python is util
 #### 1_delete two column
 * Function:
   * Delete the first two column of data (position information) and save as a new text file.
-* Description
+* Description:
   * The SERS spectrum is debaselined by a software written by Prof. Wang’s lab, which has to input data with correct data structure. However, in SERS mapping, the recorded spectrum includes position information. It recorded the x,y position at first two column. Therefore, these two columns have to be removed before import into the debaseline software. 
 
 #### 2_put txt to excel
-* Function
+* Function:
   * Put all the text files in the same folder together in a new .csv file.
-* Description
+* Description:
   * The output of debaseline software is a text file with single debaselined spectrum. However, for each experiments, there will be lots of SERS spectra. Combining these text file together for further statistic analyzation is needed. Also, the average and standard deviation of SERS spectra are also calculated after combining the text files. They are recorded at last two column. Only the text files in same folder, which has the same experiment condition, are combined.
 
 #### 3_put last two column together
-* Function
+* Function:
   * Put all the .csv file in the same folder together in a new .csv file.
-* Description
+* Description:
   * After the average and standard deviation of SERS spectra are calculated, these spectrum should be plotted togrther to compare with each other. Therefore, extracting the average and standard deviation from each experiment conditions is needed.
 
 ## ImageJ
